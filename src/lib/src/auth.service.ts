@@ -100,7 +100,7 @@ export class AuthService {
   constructor(config: AuthServiceConfig) {
     this.providers = config.providers;
 
-    this.providers.forEach((provider: LoginProvider, key: string) => {
+    /*this.providers.forEach((provider: LoginProvider, key: string) => {
       provider.initialize().then(() => {
         let readyProviders = this._readyState.getValue();
         readyProviders.push(key);
@@ -115,12 +115,40 @@ export class AuthService {
       }).catch((err) => {
         // this._authState.next(null);
       });
+    });*/
+  }
+
+  initializeProviders(){
+    //console.log("called initializaproviders")
+    this.providers.forEach((provider: LoginProvider, key: string) => {
+      provider.initialize().then(() => {
+        let readyProviders = this._readyState.getValue();
+        readyProviders.push(key);
+        this._readyState.next(readyProviders);
+        /*console.log("ready state")
+        console.log(this._readyState)*/
+
+        /*
+        //this code check if the user is already logged in with the selected provider, if it is it makes login
+        provider.getLoginStatus().then((user) => {
+          user.provider = key;
+          console.log("ho trovato una sessione attiva!")
+          this._user = user;
+          this._authState.next(user);
+        });*/
+      }).catch((err) => {
+        // this._authState.next(null);
+      });
     });
   }
 
   signIn(providerId: string, opt?: LoginOpt): Promise<SocialUser> {
     return new Promise((resolve, reject) => {
       let providerObject = this.providers.get(providerId);
+      /*console.log("print all providers")
+      console.log(this.providers)
+      console.log("print provider object selected")
+      console.log(providerObject)*/
       if (providerObject) {
         providerObject.signIn(opt).then((user: SocialUser) => {
           user.provider = providerId;

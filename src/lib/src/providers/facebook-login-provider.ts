@@ -17,6 +17,7 @@ export class FacebookLoginProvider extends BaseLoginProvider {
     ) { super(); }
 
     initialize(): Promise<void> {
+        //console.log("facebook api initialized")
         return new Promise((resolve, reject) => {
             this.loadScript(FacebookLoginProvider.PROVIDER_ID,
                 `//connect.facebook.net/${this.locale}/sdk.js`,
@@ -37,6 +38,7 @@ export class FacebookLoginProvider extends BaseLoginProvider {
     }
 
     getLoginStatus(): Promise<SocialUser> {
+      //console.log("controllo stato login utente facebook")
         return new Promise((resolve, reject) => {
             this.onReady().then(() => {
                 FB.getLoginStatus((response: any) => {
@@ -54,7 +56,7 @@ export class FacebookLoginProvider extends BaseLoginProvider {
                             user.authToken = authResponse.accessToken;
 
                             user.facebook = fbUser;
-
+                            //console.log("l'utente è connesso a facebook!")
                             resolve(user);
                         });
                     }
@@ -64,6 +66,7 @@ export class FacebookLoginProvider extends BaseLoginProvider {
     }
 
     signIn(opt?: LoginOpt): Promise<SocialUser> {
+      //console.log("i'm going to connect with facebook")
         return new Promise((resolve, reject) => {
             this.onReady().then(() => {
                 FB.login((response: any) => {

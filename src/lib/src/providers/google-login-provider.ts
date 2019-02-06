@@ -13,6 +13,7 @@ export class GoogleLoginProvider extends BaseLoginProvider {
     constructor(private clientId: string, private opt: LoginOpt = { scope: 'email' }) { super(); }
 
     initialize(): Promise<void> {
+      //console.log("google api initialization")
         return new Promise((resolve, reject) => {
             this.loadScript(GoogleLoginProvider.PROVIDER_ID,
                 'https://apis.google.com/js/platform.js',
@@ -22,8 +23,13 @@ export class GoogleLoginProvider extends BaseLoginProvider {
                             ...this.opt,
                             client_id: this.clientId
                         });
+                        /*console.log("google client id")
+                        console.log(this.clientId)
+                        console.log("google auth")
+                        console.log(this.auth2)*/
 
                         this.auth2.then(() => {
+                            //console.log("ready state google completed?")
                             this._readyState.next(true);
                             resolve();
                         }).catch((err: any) => {
@@ -58,8 +64,12 @@ export class GoogleLoginProvider extends BaseLoginProvider {
     }
 
     signIn(opt?: LoginOpt): Promise<SocialUser> {
+      //console.log("i'm going to connect with google")
         return new Promise((resolve, reject) => {
+            //console.log("in promise")
             this.onReady().then(() => {
+              //console.log("auth 2 content")
+              console.log(this.auth2)
                 let promise = this.auth2.signIn(opt);
 
                 promise.then(() => {

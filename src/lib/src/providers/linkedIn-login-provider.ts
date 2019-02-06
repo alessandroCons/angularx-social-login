@@ -23,7 +23,7 @@ export class LinkedInLoginProvider extends BaseLoginProvider {
         inner_text += 'api_key: ' + this.clientId + '\r\n';
         inner_text += 'authorize:' + (this.authorize ? 'true' : 'false') + '\r\n';
         inner_text += 'lang: ' + (this.lang ? this.lang : 'fr_FR') + '\r\n';
-
+        //console.log("linkedin api initialized")
         return new Promise((resolve, reject) => {
             this.loadScript(LinkedInLoginProvider.PROVIDER_ID,
                 '//platform.linkedin.com/in.js',
